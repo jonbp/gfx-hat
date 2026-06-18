@@ -58,6 +58,28 @@ def set_led(index, state):
     _cap1166.set_led_state(LED_MAPPING[index], state)
 
 
+def set_led_brightness(brightness):
+    """Set the brightness of all touch LEDs.
+
+    The Cap1166 only has a single, global duty-cycle control for its
+    directly-driven LEDs, so this sets the brightness for *all* six
+    LEDs at once - per-LED brightness is not supported in hardware.
+
+    Brightness only scales the "on" level; use :func:`set_led` to turn
+    individual LEDs on or off.
+
+    :param brightness: LED brightness from 0.0 to 1.0
+
+    """
+    setup()
+
+    if brightness < 0.0 or brightness > 1.0:
+        raise ValueError('brightness should be in the range 0.0 to 1.0')
+
+    # The Cap1166 direct duty cycle is a 4-bit value (0 to 15)
+    _cap1166.set_led_direct_max_duty(int(round(brightness * 15)))
+
+
 def high_sensitivity():
     """Switch to high sensitivity mode.
 

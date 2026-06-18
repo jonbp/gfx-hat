@@ -53,6 +53,8 @@ Touch
 
 .. automethod:: gfxhat.touch.set_led
 
+.. automethod:: gfxhat.touch.set_led_brightness
+
 .. automethod:: gfxhat.touch.enable_repeat
 
 .. automethod:: gfxhat.touch.high_sensitivity

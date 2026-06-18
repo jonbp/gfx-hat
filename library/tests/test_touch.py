@@ -27,6 +27,27 @@ def test_touch_set_led(cap1xxx):
     cap1xxx.Cap1166().set_led_state.assert_called_with(touch.LED_MAPPING[0], True)
 
 
+def test_touch_set_led_brightness(cap1xxx):
+    """Test that set_led_brightness maps 0.0-1.0 onto the 0-15 duty cycle."""
+    import pytest
+    from gfxhat import touch
+
+    touch.set_led_brightness(1.0)
+    cap1xxx.Cap1166().set_led_direct_max_duty.assert_called_with(15)
+
+    touch.set_led_brightness(0.0)
+    cap1xxx.Cap1166().set_led_direct_max_duty.assert_called_with(0)
+
+    touch.set_led_brightness(0.5)
+    cap1xxx.Cap1166().set_led_direct_max_duty.assert_called_with(8)
+
+    with pytest.raises(ValueError):
+        touch.set_led_brightness(1.5)
+
+    with pytest.raises(ValueError):
+        touch.set_led_brightness(-0.1)
+
+
 def test_touch_high_sensitivity(cap1xxx):
     """Test that high sensitivity calls custom commands.
 

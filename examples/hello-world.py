@@ -12,6 +12,8 @@ This basic example prints the text "Hello World" in the middle of the LCD
 
 Press any button to see its corresponding LED toggle on/off.
 
+The touch LEDs fade in at startup to demonstrate global brightness control.
+
 Press Ctrl+C to exit.
 
 """)
@@ -48,6 +50,19 @@ def handler(ch, event):
 for x in range(6):
     touch.set_led(x, 1)
     time.sleep(0.1)
+    touch.set_led(x, 0)
+
+# Brightness is global to all six LEDs, so fade them in together
+for x in range(6):
+    touch.set_led(x, 1)
+
+for step in range(16):
+    touch.set_led_brightness(step / 15.0)
+    time.sleep(0.05)
+
+time.sleep(0.2)
+
+for x in range(6):
     touch.set_led(x, 0)
 
 for x in range(6):

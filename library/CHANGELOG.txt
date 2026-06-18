@@ -1,3 +1,8 @@
+0.0.2
+-----
+
+* Add touch.set_led_brightness for global control of touch LED brightness
+
 0.0.1
 -----
 
