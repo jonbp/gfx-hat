@@ -22,14 +22,51 @@ def set_pixel(x, y, value):
     st7567.set_pixel(x, y, value)
 
 
+def set_image(image):
+    """Copy a PIL image into GFX HAT's display buffer.
+
+    Much faster than looping over :func:`set_pixel`. The image must be
+    128x64 pixels and is converted to 1-bit mode if necessary.
+
+    :param image: a PIL ``Image`` instance, 128x64 pixels
+
+    """
+    st7567.set_image(image)
+
+
 def show():
     """Update GFX HAT with the current buffer contents."""
     st7567.show()
 
 
 def contrast(value):
-    """Change GFX HAT LCD contrast."""
+    """Change GFX HAT LCD contrast.
+
+    :param value: contrast value from 0 to 63
+
+    """
     st7567.contrast(value)
+
+
+def set_display(on):
+    """Turn the LCD on or off.
+
+    Turning the display off puts the panel into a low-power sleep state
+    without clearing the buffer.
+
+    :param on: True to wake the display, False to sleep it
+
+    """
+    st7567.set_display(on)
+
+
+def invert(value=True):
+    """Invert the GFX HAT display in hardware.
+
+    :param value: True for inverse, False for normal
+
+    """
+    st7567.invert(value)
 
 
 def rotation(r=0):

@@ -4,7 +4,7 @@ import spidev
 import time
 import random
 
-SPI_SPEED_HZ = 1000000
+SPI_SPEED_HZ = 8000000
 
 WIDTH = 128
 HEIGHT = 64
@@ -165,6 +165,49 @@ class ST7567:
         self.buf[offset] &= ~(1 << bit)
         self.buf[offset] |= (value & 1) << bit
 
+    def set_image(self, image):
+        """Copy a PIL image straight into the display buffer.
+
+        This is dramatically faster than calling :meth:`set_pixel` for
+        every pixel, as it packs the whole frame in one pass (using numpy
+        when available, otherwise a pure-Python fallback).
+
+        The image must match the display dimensions (128x64). It is
+        converted to 1-bit mode if necessary; any non-zero pixel is "on".
+
+        :param image: a PIL ``Image`` instance, 128x64 pixels
+
+        """
+        if tuple(image.size) != (WIDTH, HEIGHT):
+            raise ValueError('image must be {}x{} pixels'.format(WIDTH, HEIGHT))
+
+        if image.mode != '1':
+            image = image.convert('1')
+
+        if self.rotated:
+            image = image.rotate(180)
+
+        try:
+            import numpy
+            arr = numpy.unpackbits(numpy.frombuffer(image.tobytes(), dtype=numpy.uint8))
+            arr = arr.reshape(HEIGHT // 8, 8, WIDTH)
+            weights = (1 << numpy.arange(8, dtype=numpy.uint8)).reshape(1, 8, 1)
+            packed = (arr * weights).sum(axis=1).astype(numpy.uint8)
+            self.buf = bytearray(packed.flatten().tobytes())
+        except ImportError:
+            buf = bytearray(WIDTH * HEIGHT // 8)
+            px = image.load()
+            for page in range(HEIGHT // 8):
+                base = page * WIDTH
+                y0 = page * 8
+                for x in range(WIDTH):
+                    byte = 0
+                    for bit in range(8):
+                        if px[x, y0 + bit]:
+                            byte |= 1 << bit
+                    buf[base + x] = byte
+            self.buf = buf
+
     def show(self):
         """Update the ST7567 display with the buffer contents."""
         self.setup()
@@ -176,9 +219,38 @@ class ST7567:
         self._command([ST7567_EXIT_RMWMODE])
 
     def contrast(self, value):
-        """Update the ST7568 display contrast."""
+        """Update the ST7567 display contrast.
+
+        :param value: contrast value from 0 to 63
+
+        """
         self.setup()
+        value = max(0, min(63, int(value)))
         self._command([ST7567_SETCONTRAST, value])
+
+    def set_display(self, on):
+        """Turn the display on or off.
+
+        Turning the display off puts the panel into a low-power sleep
+        state without losing the buffer contents.
+
+        :param on: True to wake the display, False to sleep it
+
+        """
+        self.setup()
+        self._command([ST7567_DISPON if on else ST7567_DISPOFF])
+
+    def invert(self, value):
+        """Invert the display in hardware.
+
+        This swaps on/off pixels for the whole panel without modifying
+        the buffer, so it's effectively instant.
+
+        :param value: True for inverse, False for normal
+
+        """
+        self.setup()
+        self._command([ST7567_DISPINVERSE if value else ST7567_DISPNORMAL])
 
 
 if __name__ == '__main__':  # pragma: no cover

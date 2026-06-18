@@ -35,12 +35,6 @@ If you choose to download examples you'll find them in `/home/pi/Pimoroni/gfxhat
 sudo pip3 install gfxhat
 ```
 
-#### Library install for Python 2:
-
-```bash
-sudo pip2 install gfxhat
-```
-
 ### Development:
 
 If you want to contribute, or like living on the edge of your seat by having the latest code, you should clone this repository, `cd` to the library directory, and run:

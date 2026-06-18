@@ -1,3 +1,13 @@
+0.0.3
+-----
+
+* Add lcd.set_image for fast whole-frame updates from a PIL image
+* Add lcd.set_display to sleep/wake the LCD panel
+* Add lcd.invert for instant hardware display inversion
+* Clamp lcd.contrast to the valid 0-63 range
+* Validate r/g/b range in backlight.set_pixel
+* Increase LCD SPI clock from 1MHz to 8MHz
+
 0.0.2
 -----
 

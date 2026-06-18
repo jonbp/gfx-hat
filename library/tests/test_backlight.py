@@ -20,6 +20,12 @@ def test_backlight_set_pixel(sn3218):
     with pytest.raises(ValueError):
         backlight.set_pixel(9, 255, 255, 255)
 
+    with pytest.raises(ValueError):
+        backlight.set_pixel(0, 256, 0, 0)
+
+    with pytest.raises(ValueError):
+        backlight.set_pixel(0, 0, -1, 0)
+
     backlight.set_pixel(0, 255, 255, 255)
 
     # TODO we probably shouldn't use implementation details to test the API

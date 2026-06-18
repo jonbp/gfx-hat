@@ -35,6 +35,10 @@ def set_pixel(x, r, g, b):
     if x > 5 or x < 0:
         raise ValueError('x should be in the range 0 to 5')
 
+    for value in (r, g, b):
+        if value < 0 or value > 255:
+            raise ValueError('r, g and b should be in the range 0 to 255')
+
     x = LED_MAP[x]
     x *= 3
     _buf[x:x + 3] = b, g, r
