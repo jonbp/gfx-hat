@@ -33,7 +33,7 @@ class MenuOption:
         self.name = name
         self.action = action
         self.options = options
-        self.size = font.getsize(name)
+        self.size = font.getbbox(name)[2:]
         self.width, self.height = self.size
 
     def trigger(self):
@@ -105,7 +105,7 @@ try:
                 draw.rectangle(((x-2, y-1), (width, y+10)), 1)
             draw.text((x, y), option.name, 0 if index == current_menu_option else 1, font)
 
-        w, h = font.getsize('>')
+        w, h = font.getbbox('>')[2:]
         draw.text((0, (height - h) / 2), '>', 1, font)
 
         for x in range(width):

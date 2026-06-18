@@ -32,7 +32,7 @@ def scan_contrast():
 
         message = "Contrast: {:02d}".format(c)
 
-        w, h = font.getsize(message)
+        w, h = font.getbbox(message)[2:]
         left, top = (width - w) / 2, (height - h) / 2
 
         draw.text((left, top), message, 1, font=font)
