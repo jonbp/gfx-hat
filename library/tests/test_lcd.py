@@ -1,5 +1,5 @@
 # noqa D100
-import mock
+from unittest import mock
 import pytest
 
 

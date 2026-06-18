@@ -1,5 +1,6 @@
 """Library for the GFX HAT SN3218 backlight."""
 _sn3218 = None
+is_setup = False
 
 _buf = [0 for x in range(18)]
 
@@ -8,12 +9,18 @@ LED_MAP = [2, 1, 0, 5, 4, 3]
 
 def setup():
     """Set up the backlight on GFX HAT."""
-    global _sn3218
+    global _sn3218, is_setup
+
+    if is_setup:
+        return
+
     import sn3218 as _sn3218
 
     _sn3218.enable()
     _sn3218.enable_leds(0b111111111111111111)
     _sn3218.output(_buf)
+
+    is_setup = True
 
 
 def set_pixel(x, r, g, b):
@@ -25,7 +32,6 @@ def set_pixel(x, r, g, b):
     :param b: amount of blue from 0 to 255
 
     """
-    global _buf
     if x > 5 or x < 0:
         raise ValueError('x should be in the range 0 to 5')
 

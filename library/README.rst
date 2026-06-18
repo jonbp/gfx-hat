@@ -46,13 +46,6 @@ Library install for Python 3:
 
     sudo pip3 install gfxhat
 
-Library install for Python 2:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code:: bash
-
-    sudo pip2 install gfxhat
-
 Development:
 ~~~~~~~~~~~~
 
@@ -63,9 +56,6 @@ library directory, and run:
 .. code:: bash
 
     sudo python3 setup.py install
-
-(or ``sudo python setup.py install`` whichever your primary Python
-environment may be)
 
 In all cases you will have to enable the i2c and spi buses.
 

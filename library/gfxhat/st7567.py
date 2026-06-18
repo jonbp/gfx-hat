@@ -119,7 +119,7 @@ class ST7567:
 
     def clear(self):
         """Clear the python display buffer."""
-        self.buf = [0 for _ in range(128 * 64 // 8)]
+        self.buf = bytearray(WIDTH * HEIGHT // 8)
 
     def _command(self, data):
         GPIO.output(self.pin_dc, 0)

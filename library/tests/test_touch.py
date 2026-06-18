@@ -1,5 +1,5 @@
 # noqa D100
-import mock
+from unittest import mock
 
 
 def test_touch_setup(cap1xxx):
