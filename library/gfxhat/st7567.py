@@ -69,6 +69,11 @@ ST7567_NOP = 0xe3             # 0xe3: NOP Command for no operation */
 
 ST7565_STARTBYTES = 0
 
+# Default contrast. This driver uses regulation resistor ratio 3 (see _init),
+# which gives a darker panel; 42 is tuned for that, whereas the old value of 58
+# (paired with the historic ratio-2 setup) leaves ratio-3 panels too dark.
+ST7567_DEFAULT_CONTRAST = 42
+
 
 class ST7567:
     """Class to drive the ST7567 128x64 SPI LCD."""
@@ -146,7 +151,7 @@ class ST7567:
             ST7567_REG_RATIO | 3,
             ST7567_DISPON,
             ST7567_SETCONTRAST,       # Set contrast
-            58                        # Contrast value
+            ST7567_DEFAULT_CONTRAST   # Contrast value
         ])
 
     def set_pixel(self, x, y, value):

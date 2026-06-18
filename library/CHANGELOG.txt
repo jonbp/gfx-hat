@@ -5,6 +5,7 @@
 * Add lcd.set_display to sleep/wake the LCD panel
 * Add lcd.invert for instant hardware display inversion
 * Clamp lcd.contrast to the valid 0-63 range
+* Lower default contrast from 58 to 42 to suit the ratio-3 init
 * Validate r/g/b range in backlight.set_pixel
 * Increase LCD SPI clock from 1MHz to 8MHz
 

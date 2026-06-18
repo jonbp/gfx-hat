@@ -38,7 +38,7 @@ class Device:
         # ST7567 frame buffer, native layout: byte = (y // 8) * WIDTH + x,
         # bit = y % 8. Matches gfxhat.st7567 exactly.
         self.framebuffer = bytearray(WIDTH * PAGES)
-        self.contrast = 58
+        self.contrast = 42  # matches gfxhat.st7567 ST7567_DEFAULT_CONTRAST
         self.display_on = True
         self.display_inverse = False
 
